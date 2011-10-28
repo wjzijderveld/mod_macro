@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset='utf-8'>
+
+  <title>wjzijderveld/mod_macro @ GitHub</title>
+
+  <style type="text/css">
+    body {
+      margin-top: 1.0em;
+      background-color: #ffffff;
+      font-family: Helvetica, Arial, FreeSans, san-serif;
+      color: #000000;
+    }
+    #container {
+      margin: 0 auto;
+      width: 700px;
+    }
+    h1 { font-size: 3.8em; color: #000000; margin-bottom: 3px; }
+    h1 .small { font-size: 0.4em; }
+    h1 a { text-decoration: none }
+    h2 { font-size: 1.5em; color: #000000; }
+    h3 { text-align: center; color: #000000; }
+    a { color: #000000; }
+    .description { font-size: 1.2em; margin-bottom: 30px; margin-top: 30px; font-style: italic;}
+    .download { float: right; }
+    pre { background: #000; color: #fff; padding: 15px;}
+    hr { border: 0; width: 80%; border-bottom: 1px solid #aaa}
+    .footer { text-align:center; padding-top:30px; font-style: italic; }
+  </style>
+</head>
+
+<body>
+  <a href="http://github.com/wjzijderveld/mod_macro"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub" /></a>
+
+  <div id="container">
+
+    <div class="download">
+      <a href="http://github.com/wjzijderveld/mod_macro/zipball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/zip.png"></a>
+      <a href="http://github.com/wjzijderveld/mod_macro/tarball/master">
+        <img border="0" width="90" src="http://github.com/images/modules/download/tar.png"></a>
+    </div>
+
+    <h1><a href="http://github.com/wjzijderveld/mod_macro">mod_macro</a>
+      <span class="small">by <a href="http://github.com/wjzijderveld">wjzijderveld</a></span></h1>
+
+    <div class="description">
+      The Apache module mod_macro, created by Fabien Coelho
+    </div>
+
+    <p>THIS IS A COPY OF THE ORIGINAL PAGE CREATED BY FABIEN COELHO.
+
+
+Motivation
+
+I hate copy-paste.
+
+When configuring the apache server I often have to copy-paste some parts, especially with virtual hosts to enable similar features or options. In order to avoid this, I would need some kind of macro capabilities in the server runtime configuration files.
+
+Apache already includes preprocessor features such as <IfDefine> and Include. This is not enough for me.
+
+There are several existing processors with macro capabilities such as cpp and m4. However, they need assumptions about the lexical structure of the files, that we cannot have with apache. Moreover they cannot be integrated with the apache html-like configuration style.
+
+The apache-perl integration allows <Perl> sections within the configuration file. These sections could be of some use with subroutines and so, but it requires mod_perl and to change my habits a lot. Furthermore, I do not like perl.
+
+So I end up with deciding to implement a macro extension module to apache.
+
+In my opinion, this stuff MUST NOT grow to a full language.
+
+It should just grow to what is needed to manage configuration files simply and elegantly, and to avoid unnecessary copy-pastes. I may consider adding a foreach repetition section, if proven useful. I may also consider reimplementing a working Include since the current one does not work properly (bug #3169/#3578).
+
+But no while, no arithmetics, no variables, no recursion, no goto, no sql, no extended regexpr... Never: I'll stick to the KISS Principle. (Keep It Simple, Stupid!)
+
+My purpose is easier apache configuration file maintenance, not general purpose programming. If you want actual programming, consider perl sections (or embed another programming language like tcl or python).
+
+Specification
+
+I gave myself the following requirements:
+compatible with the current apache configuration style, defined as:
+ascii textual configuration files (no external preprocessor).
+few assumptions about lexical conventions (backslash-continued-line with leading case-insensitive keywords).
+comments on '#'-started lines.
+properly nested html-like (not looking too close) sections.
+the result looks like:
+<Macro ...> ... </Macro>
+Use ...
+simple specification (hummm;-)
+one separate case-insensitive name space for macros (no interaction).
+usual lexical conventions for macro arguments.
+minimum lexical convention for macro contents (all argument string occurences are coldly substituted in Use).
+substitution of the longest argument if several match and conflict.
+macro contents should be properly nested.
+simple and safe implementation.
+but clear and precise error messages (that is not always easy!).
+detection of recursions in macro expansions.
+no argument expansion within just substituted arguments.
+use of ap_* where appropriate (in ap_*, it seems that the code is the doc;-).
+
+
+Summary
+
+mod_macro is a third-party module to the Apache Http Server, distributed with a BSD-style license like Apache. 
+It allows the definition and use of macros within apache runtime configuration files. 
+The syntax is a natural extension to apache html-like configuration style.
+
+Examples
+
+Here is a sample use of mod_macro within a configuration file:
+## Define a VHost Macro.
+
+<Macro VHost $host $port $dir>
+  Listen $port
+  <VirtualHost $host:$port>
+
+    DocumentRoot $dir
+
+    <Directory $dir>
+      # do something here...
+    </Directory>
+
+    # limit access to intranet subdir.
+    <Directory $dir/intranet>
+      order deny,allow
+      deny from all
+      allow from 10.0.0.0/8
+    </Directory>
+  </VirtualHost>
+</Macro>
+
+## Use of VHost with different arguments.
+
+Use VHost www.apache.org 80 /projects/apache/web
+Use VHost www.perl.com 8080 /projects/perl/web
+Use VHost www.ensmp.fr 1234 /projects/mines/web
+
+## Done.
+A simple example is presented in issue 144 of Apache Week.
+
+Another example shows how to simplify mod_perl configuration with mod_macro.
+
+Some promotion by Jim Jagielski at ApacheCon reported on Trouble Shooters by Steve Litt.
+
+Benefits
+
+You may have several benefits from using macros in configuration files.
+smaller configuration files to maintain.
+less bugs due to copy-pastes only partially updated.
+better readability. for instance: Use AllowLocalAccess might be considered clearer than
+allow from 192.54.172.0/24 192.54.148.0/24 10.0.0.0/8
+all this not at the price of perl or m4 programming.</p><h2>Install</h2>
+<p>Installing the mod_macro module with apache is rather simple, especially with apxs. Here is a sample direct installation with apache 2.2.0:
+
+download the latest mod_macro release:
+http://www.coelho.net/mod_macro/mod_macro-latest.tar.gz
+
+uncompress the distribution tar file if necessary.
+prompt> gunzip mod_macro-latest.tar.gz
+
+untar the distribution tar file along the apache source tree.
+prompt> tar xf mod_macro-latest.tar
+
+You should read the README, LICENSE and INSTALL files provided with the distribution. You may also browse the source code to check for any backhole or whatever.
+run apxs on the module source to compile, install and add the module
+prompt> apxs -cia mod_macro-1.1.11/mod_macro.c
+
+you may also want to install the html documentation.
+prompt> cp mod_macro-1.1.11/mod_macro.html apache_2.2.0/manual/mod/
+
+and maybe update apache_2.2.0/htdocs/manual/mod/index.html to add a reference to the mod_macro.html file.</p>
+<h2>License</h2>
+<p>This software is made available as a third-party apache module, under the terms of a BSD-style license, just like Apache. The license is included in the distribution. See http://www.opensource.org/ for a discussion about open source licenses.
+
+Versions prior to 1.1.0 were distributed under the terms of the GNU General Public License version 2 or later. However it does not allow commercial version of the software to be derived, hence the switch.</p>
+<h2>Authors</h2>
+<p>Fabien Coelho<br/><br/>      </p>
+<h2>Contact</h2>
+<p>Willem-Jan Zijderveld (wjzijderveld@gmail.com)<br/>      </p>
+
+
+    <h2>Download</h2>
+    <p>
+      You can download this project in either
+      <a href="http://github.com/wjzijderveld/mod_macro/zipball/master">zip</a> or
+      <a href="http://github.com/wjzijderveld/mod_macro/tarball/master">tar</a> formats.
+    </p>
+    <p>You can also clone the project with <a href="http://git-scm.com">Git</a>
+      by running:
+      <pre>$ git clone git://github.com/wjzijderveld/mod_macro</pre>
+    </p>
+
+    <div class="footer">
+      get the source code on GitHub : <a href="http://github.com/wjzijderveld/mod_macro">wjzijderveld/mod_macro</a>
+    </div>
+
+  </div>
+
+  
+</body>
+</html>
