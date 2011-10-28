@@ -1,0 +1,52 @@
+#
+# $Id: INSTALL.src 582 2009-03-20 06:57:08Z coelho $
+#
+
+Installing the mod_macro 1.1.11 module with apache 2.2.0 is simple,
+especially if you use mod_so for dynamic linking.
+
+Here is a sample installation with apache 2.2.0 and mod_macro 1.1.11:
+
+
+(0) Get the latest mod_macro release:
+
+    prompt> wget http://www.coelho.net/mod_macro/mod_macro-latest.tar.gz
+
+
+(1) Uncompress the distribution tar file if necessary.
+
+    prompt> gunzip mod_macro-latest.tar.gz
+
+
+(2) Untar the distribution tar file along the apache source tree.
+
+    prompt> tar xf mod_macro-latest.tar
+
+
+(1,2)bis With gnu tar, the two previous operations can be achieved
+    in a single step.
+
+    prompt> tar xzf mod_macro-latest.tar.gz
+
+
+(3) Compile and install mod macro as a dynamic shared object library
+    ready to be loaded into apache.
+
+    prompt> apxs -c -i -a mod_macro-1.1.11/mod_macro.c
+
+    Under MacOS X, try something like:
+
+    macos> sudo apxs -cia -Wc,'-arch x86_64' -Wl,'-arch x86_64' mod_macro.c
+
+
+(4) You may also want to install the html documentation.
+
+    prompt> cp mod_macro-1.1.11/mod_macro.html \
+               apache_2.2.0/htdocs/manual/mod/
+
+    and maybe update apache_2.2.0/htdocs/manual/mod/index.html to
+    add a reference to the mod_macro.html file.
+
+(5) If you want a static binding, see the apache documentation.
+
+(6) Enjoy!

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!-- Copyright (c) 1998-2010 Fabien Coelho. All rights reserved. -->
+<!-- $Id: mod_macro.src.html 587 2010-09-11 08:02:48Z coelho $ -->
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+  <title>mod_macro - Apache HTTP Server</title>
+<link href="http://httpd.apache.org/docs/2.2/style/css/manual.css" rel="stylesheet" media="all" type="text/css" title="Main stylesheet" />
+<link href="http://httpd.apache.org/docs/2.2/style/css/manual-loose-100pc.css" rel="alternate stylesheet" media="all" type="text/css" title="No Sidebar - Default font size" />
+<link href="http://httpd.apache.org/docs/2.2/style/css/manual-print.css" rel="stylesheet" media="print" type="text/css" />
+<link href="http://httpd.apache.org/docs/2.2/images/favicon.ico" rel="shortcut icon" /></head>
+<body>
+
+<div id="page-header">
+  <p class="menu">
+    <a href="http://httpd.apache.org/docs/2.2/mod/">Modules</a> | <a href="http://httpd.apache.org/docs/2.2/mod/directives.html">Directives</a> | <a href="http://httpd.apache.org/docs/2.2/faq/">FAQ</a> | <a href="http://httpd.apache.org/docs/2.2/glossary.html">Glossary</a> | <a href="http://httpd.apache.org/docs/2.2/sitemap.html">Sitemap</a>
+  </p>
+  <p class="apache">Apache HTTP Server Version 2.2</p>
+  <img alt="" src="http://httpd.apache.org/docs/2.2/images/feather.gif" />
+</div>
+<div class="up"><a href="./"><img title="&lt;-" alt="&lt;-" src="http://httpd.apache.org/docs/2.2/images/left.gif" /></a></div>
+
+<div id="path">
+  <a href="http://www.apache.org/">Apache</a> &gt; <a href="http://httpd.apache.org/">HTTP Server</a> &gt; <a href="http://httpd.apache.org/docs/">Documentation</a> &gt; <a href="http://httpd.apache.org/docs/2.2/">Version 2.2</a> &gt; <a href="./">Modules</a>
+</div>
+
+<div id="page-content">
+
+  <div id="preamble">
+
+    <H1>Apache Module mod_macro 1.1.11</H1>
+
+    <div class="toplang">
+      <p><span>Available Languages: </span>
+        <a href="http://httpd.apache.org/docs/2.2/en/mod/mod_logio.html" title="English">&nbsp;en&nbsp;</a>
+      </p>
+    </div>
+
+    <table class="module">
+      <tr>
+        <th><a href="module-dict.html#Description">Description:</a></th>
+        <td>This module provides usage of macros within apache runtime configuration files</td></tr>
+      <tr>
+        <th><a href="module-dict.html#Status">Status:</a></th>
+        <td>Extension</td></tr>
+      <tr>
+        <th><a href="module-dict.html#ModuleIdentifier">Module Identifier:</a></th>
+        <td>macro_module</td></tr>
+      <tr>
+        <th><a href="module-dict.html#SourceFile">Source File:</a></th>
+        <td>mod_macro.c</td></tr>
+      <tr>
+        <th><a href="module-dict.html#Homepage">Homepage:</a></th>
+        <td><a href="http://www.coelho.net/mod_macro/">http://www.coelho.net/mod_macro/</a></td></tr>
+    </table>
+
+    <h3>Summary</h3>
+
+    <p>This module is contained in the <CODE>mod_macro.c</CODE> file, and
+       is not compiled in by default. It provides for using macros within apache
+       runtime configuration files. These macros can be given arguments.
+       They are expanded when used (arguments are substituted by their values),
+      and the result is processed normally.
+    </p>
+
+    <P>This documentation describes version 1.1.11 of mod_macro. For the latest version see:
+      <a href="http://www.coelho.net/mod_macro/"><code>http://www.coelho.net/mod_macro/</code></a>
+    </p>
+
+  </div><!-- /preamble -->
+
+  <div id="quickview">
+    <h3 class="directives">Directives</h3>
+    <ul id="toc">
+      <LI><img alt="" src="http://httpd.apache.org/docs/2.2/images/down.gif" /> <A HREF="#error">Error</A></LI>
+      <LI><img alt="" src="http://httpd.apache.org/docs/2.2/images/down.gif" /> <A HREF="#macro">&lt;Macro&gt;</A></LI>
+      <LI><img alt="" src="http://httpd.apache.org/docs/2.2/images/down.gif" /> <A HREF="#use">Use</A></LI>
+      <LI><img alt="" src="http://httpd.apache.org/docs/2.2/images/down.gif" /> <A HREF="#warning">Warning</A></LI>
+    </ul>
+
+    <h3>Topics</h3>
+    <ul id="topics">
+      <li><img alt="" src="http://httpd.apache.org/docs/2.2/images/down.gif" /> <a href="#features">Features</a></li>
+    </ul>
+  </div>
+
+  <div class="top"><a href="#page-header"><img alt="top" src="http://httpd.apache.org/docs/2.2/images/up.gif" /></a></div>
+  <div class="section">
+  <h2><a name="features" id="order">Features</a></h2>
+    Definition of a macro:
+    <UL>
+      <LI> macro definition within a &lt;Macro&gt; section, in the apache style.</LI>
+      <LI> user defined names for the macro and its arguments.</LI>
+      <LI> macro names are case-insensitive.</LI>
+      <LI> macro argument names are case sensitive.</LI>
+      <LI> arguments of a macro must have distinct names.</LI>
+      <LI> error on empty argument names.</LI>
+      <LI> redefining a macro generates a warning.</LI>
+      <LI> macro definitions can be nested... (but what for?)</LI>
+      <LI> warn about unused macro arguments.</LI>
+      <LI> warn about macro arguments which prefix one another.</LI>
+      <LI> warn if arguments are not prefixed by any of '<code>$%@</code>' (good practice).</LI>
+      <LI> warn about empty macro contents.</LI>
+      <LI> warns if sections are not properly nested within a macro. (if it is detected so).</LI>
+      <LI> the lexical scope of macro arguments is restricted to the macro text, it is not forwarded to includes for instance.</LI>
+      <LI> arbitrary contents in macros.
+        <p>It means you can put perl sections or whatever you like in a macro. No assumption is made about
+         the lexical structure (quotes, spaces or whatever) within the macro contents but to expect
+         a set of backslash-continued independent lines.</p>
+      </LI>
+    </UL>
+
+    Use of a macro:
+    <UL>
+      <LI> number of arguments must match the definition.</LI>
+      <LI> all occurences of macro arguments are substituted by their values.</LI>
+      <LI> in case of conflicts, the longest argument name is chosen.</LI>
+      <LI> macro expansion recursion is detected and stopped (error).</LI>
+      <LI> warn about empty arguments when used.</LI>
+      <LI> on errors, try to describe precisely where the error occured. </LI>
+      <LI> <CODE>$</CODE> and <CODE>%</CODE>-prefixed arguments are not escaped.</LI>
+      <LI> <CODE>@</CODE>-prefixed arguments are escaped.</LI>
+    </UL>
+
+    Misc:
+    <UL>
+      <LI> Error directive to stop processing a configuration file.</LI>
+      <LI> Warning directive to issue warnings from a configuration file.</LI>
+    </UL>
+  </div><!-- /section -->
+
+  <div class="top"><a href="#page-header"><img alt="top" src="http://httpd.apache.org/docs/2.2/images/up.gif" /></a></div>
+  <div class="directive-section">
+    <h2><a name="error" id="error">Error directive</a></h2>
+
+    <table class="directive">
+      <tr>
+        <th><a href="directive-dict.html#Description">Description:</a></th>
+        <td>Raise error message</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Syntax">Syntax:</a></th>
+        <td><code>Error <var>message</var></td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Context">Context:</a></th>
+        <td>server config, virtual host, directory</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Status">Status:</a></th>
+        <td>Extra</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Module">Module:</a></th>
+        <td>mod_macro</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Compatibility">Compatibility:</a></th>
+        <td>Apache 1.3, 2.0 and 2.2</td></tr>
+    </table>
+
+    <p>This directive issues an error from the configuration file and stop processing it.</p>
+
+    <div class="example"><h3>Example:</h3><p><code>
+      &lt;IfModule !mod_perl.c&gt;<br />
+      Error Hey, you forgot to install mod_perl! I need it!<br />
+      &lt;/IfModule&gt;
+    </code></p></div>
+  </div>
+
+  <div class="top"><a href="#page-header"><img alt="top" src="http://httpd.apache.org/docs/2.2/images/up.gif" /></a></div>
+  <div class="directive-section">
+    <h2><a name="macro" id="macro">&lt;Macro&gt; directive</a></h2>
+
+    <table class="directive">
+      <tr>
+        <th><a href="directive-dict.html#Description">Description:</a></th>
+        <td>Defines a macro which can be used later</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Syntax">Syntax:</a></th>
+        <td><code>&lt;Macro <var>name</var> [<var>arg1</var> .. <var>argN</var>]</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Context">Context:</a></th>
+        <td>server config, virtual host, directory</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Status">Status:</a></th>
+        <td>Extra</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Module">Module:</a></th>
+        <td>mod_macro</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Compatibility">Compatibility:</a></th>
+        <td>Apache 1.3, 2.0 and 2.2</td></tr>
+    </table>
+
+    <P>
+      This directive controls the definition of a macro within the server
+      runtime configuration files. The first argument is the name of the macro.
+      Others are arguments to the macro. It is good practice to prefix
+      argument names with any of '<CODE>$%@</CODE>', and not macro names with such characters.
+    </P>
+
+
+    <div class="note">
+      <h3>Note</h3>
+      <p>If you're using <CODE>mod_macro</CODE> along with <CODE>mod_define</CODE>,
+        do not use the '<CODE>$</CODE>' character as a prefix to macro arguments
+        (because this character is reserved for defined variables).
+        Also <CODE>mod_define</CODE> variable substitution is performed <B>after</B>
+        macro expansion.</p>
+    </div>
+
+    <div class="example"><h3>Example:</h3><p><code>
+       &lt;Macro LocalAccessPolicy&gt;<br />
+       order deny,allow<br />
+       deny from all<br />
+       allow from 10.2.16.0/24<br />
+       &lt;/Macro&gt;<br />
+       <br />
+       &lt;Macro RestrictedAccessPolicy $ipnumbers&gt;<br />
+       order deny,allow<br />
+       deny from all<br />
+       allow from $ipnumbers<br />
+       &lt;/Macro&gt;
+    </code></p></div>
+
+  </div>
+
+  <div class="top"><a href="#page-header"><img alt="top" src="http://httpd.apache.org/docs/2.2/images/up.gif" /></a></div>
+  <div class="directive-section">
+    <h2><a name="use" id="use">Use directive</a></h2>
+
+    <table class="directive">
+      <tr>
+        <th><a href="directive-dict.html#Description">Description:</a></th>
+        <td>Use a macro</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Syntax">Syntax:</a></th>
+        <td><code>Use <var>name</var> [<var>value1</var> .. <var>valueN</var>]</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Context">Context:</a></th>
+        <td>server config, virtual host, directory</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Status">Status:</a></th>
+        <td>Extra</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Module">Module:</a></th>
+        <td>mod_macro</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Compatibility">Compatibility:</a></th>
+        <td>Apache 1.3, 2.0 and 2.2</td></tr>
+    </table>
+
+    <P>
+      This directive controls the use of a macro. The specified macro is
+      expanded. It must be given the same number of arguments than in the
+      macro definition. The provided values are associated to their corresponding
+      initial argument and are substituted before processing.
+    </P>
+
+    <div class="example"><p><code>
+       Use LocalAccessPolicy<br />
+       <br />
+       ...<br />
+       <br />
+       Use RestrictedAccessPolicy "192.54.172.0/24 192.54.148.0/24"
+    </code></p></div>
+
+    is equivalent, with the macros defined above, to:
+
+    <div class="example"><p><code>
+      order deny,allow<br />
+      deny from all<br />
+      allow from 10.2.16.0/24<br />
+      <br />
+      ...<br />
+      <br />
+      order deny,allow<br />
+      deny from all<br />
+      allow from 192.54.172.0/24 192.54.148.0/24
+    </code></p></div>
+
+  </div>
+
+  <div class="top"><a href="#page-header"><img alt="top" src="http://httpd.apache.org/docs/2.2/images/up.gif" /></a></div>
+  <div class="directive-section">
+    <h2><a name="warning" id="warning">Warning directive</a></h2>
+
+    <table class="directive">
+      <tr>
+        <th><a href="directive-dict.html#Description">Description:</a></th>
+        <td>Raise a warning on processing configuration file</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Syntax">Syntax:</a></th>
+        <td><code>Warning <var>message</var></td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Context">Context:</a></th>
+        <td>server config, virtual host, directory</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Status">Status:</a></th>
+        <td>Extra</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Module">Module:</a></th>
+        <td>mod_macro</td></tr>
+      <tr>
+        <th><a href="directive-dict.html#Compatibility">Compatibility:</a></th>
+        <td>Apache 1.3, 2.0 and 2.2</td></tr>
+    </table>
+
+    <P>
+      This directive issues a warning from the configuration file.
+      Processing goes on.
+    </P>
+
+    <div class="example">
+      <h3>Example</h3>
+      <p><code>
+      &lt;IfDefine !RunProxy&gt;<br />
+      Warning The PROXY will not run!<br />
+      &lt;/IfDefine&gt;<br />
+      <br />
+      &lt;IfDefine RunProxy&gt;<br />
+      # proxy configuration<br />
+      ...<br />
+      &lt;/IfDefine&gt;
+    </code></p></div>
+
+  </div>
+</div>
+
+<div class="bottomlang">
+<p><span>Available Languages: </span><a href="http://httpd.apache.org/docs/2.2/en/mod/mod_macro.html" title="English">&nbsp;en&nbsp;</a></p>
+</div>
+<div id="footer">
+  <p class="apache">Author: <a href="http://www.coelho.net/home.html">Fabien Coelho</a>.<br />Licensed under the <a href="http://www.coelho.net/mod_macro/#license">BSD-style License like Apache</a>.</p>
+  <p class="menu"><a href="http://httpd.apache.org/docs/2.2/mod/">Modules</a> | <a href="http://httpd.apache.org/docs/2.2/mod/directives.html">Directives</a> | <a href="http://httpd.apache.org/docs/2.2/faq/">FAQ</a> | <a href="http://httpd.apache.org/docs/2.2/glossary.html">Glossary</a> | <a href="http://httpd.apache.org/docs/2.2/sitemap.html">Sitemap</a></p></div>
+</body></html>

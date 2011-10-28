@@ -1,0 +1,31 @@
+#
+# $Id: README.src 551 2006-08-07 13:16:28Z coelho $
+#
+
+APACHE MOD_MACRO MODULE:
+------------------------
+
+This module allows to define and use macros in apache runtime
+configuration files.
+
+To install it, see the INSTALL file.
+
+It has been tested with apache-2.2.0 on a Linux/Intel machine.
+However it does only use some string processing thus it should be portable
+at least on any UN*X machine.
+
+
+AUTHOR:
+-------
+
+Fabien Coelho.
+mod.macro@coelho.net
+http://www.coelho.net/
+
+
+LICENSE:
+--------
+
+This software is distributed under the terms of a BSD-style license.
+Basically, you're free to use, distribute and modify it, provided that
+you keep the initial license. See the LICENSE file for details.

@@ -1,0 +1,261 @@
+#
+# $Id: CHANGES 584 2010-09-11 07:57:26Z coelho $
+#
+
+
+                       MOD_MACRO RELEASES
+
+Version: 1.1.11
+Date: Sat Sep 11 09:41:35 CEST 2010
+
+ - some MacOS X define "true" and "false" macros which break the compilation,
+   pointed out by Paul Mcilwaine and Mike Papper.
+ - updated web page to use Apache CSS style by Vyacheslav Grebyonkin.
+ - simpler license, people are not require to document their changes.
+
+
+Version: 1.1.10
+Date: Mon Dec 24 11:30:00 CET 2007
+
+ - @-arguments are now escaped, $%-ones are not
+
+
+Version: 1.1.9
+Date: Tue Nov 27 13:20:29 CET 2007
+
+ - fix Error and Warning directives for Apache 2.2
+
+
+Version: 1.1.8
+Date: Mon Aug  7 14:22:24 CEST 2006
+
+ - fix compilation for win32/win64.
+ - remove useless function.
+
+
+Version: 1.1.7
+Date: Wed Mar  1 07:48:08 CET 2006
+
+ - port to apache 2.2
+
+
+Version: 1.1.2b
+Date: Fri Jul 16 09:00:22 CEST 2004
+
+ - license also fixed for apache 1.3 version.
+
+
+Version: 1.1.6
+Date: Thu Jul 15 08:53:12 CEST 2004
+
+ - license fixed to match apache's license evolutions wrt the
+   'advertising clause'.
+
+
+Version: 1.1.3
+Date: Sat Jun  1 23:49:48 CEST 2002
+
+ - port to apache 2
+
+
+Version: 1.1.2
+Date: Tue Oct 16 17:22:35 CEST 2001
+
+ - nicer substitution inspired by mod_define.
+ - compatibility note added because of mod_define errors on $...
+ - test48.conf added.
+ - bug with apache 1.3.22 fixed by Axel Beckert.
+
+
+Version: 1.1.1
+Date: Sat Jan 30 11:37:05 MET 1999
+
+ - html source moved as .src.html + automatic versions...
+ - also README and INSTALL.
+ - GNU makefile updated for better automation.
+ - md5 and sha1 digests added.
+ - simpler home page, with less small sections.
+ - automatic .c derivation (for license inclusion + expand)
+ - source: assert++, const++
+ - tar directory includes the version number.
+ - advertise itself in server tokens.
+ - small and basic dynamic test added.
+
+
+Version: 1.1.0
+Date: Mon Jan 11 08:18:47 MET 1999
+
+ - new BSD-like license.
+ - ok for apache 1.3.4.
+ - updated home page.
+ - validation fix for 1.3.4 (messages are now prefixed with "httpd: ")
+
+
+Version: 1.0.18
+Date: Thu Dec 24 14:28:21 MET 1998
+
+ - try to detect and warn about bad nesting.
+ - home++.
+ - doc & tests.
+
+
+Version: 1.0.17
+Date: Thu Dec 24 11:56:13 MET 1998
+
+ - lobbying section added to home page and INSTALL.
+ - more comments in code.
+ - docs++.
+ - home++.
+
+
+Version: 1.0.16
+Date: Wed Dec 23 13:40:02 MET 1998
+
+ - docs++
+ - code++ (style, unexpected_keyword function more general).
+ - warns about non '$%&@#'-prefixed argument names. (??)
+ - warns about '$%&@#'-prefixed macro names. (???)
+ - warn about empty contents.
+ - possible define to avoid all warnings (not tested)
+ - more non-regression tests (47).
+
+
+Version: 1.0.15
+Date: Tue Dec 22 15:32:22 MET 1998
+
+ - more tests.
+ - few cosmetics.
+ - updated docs.
+ - patch added, and INSTALL fixed accordingly.
+ - tests apply the patch automatically.
+
+
+Version: 1.0.14
+Date: Mon Dec 21 15:31:23 MET 1998
+
+ - cosmetics.
+ - internals changed a lot:-(
+   instead of interpreting the macro, the macro content is
+   inserted in place in the file (or it looks like it).
+   a fix in http_config.c is needed for better error messages.
+ - index.html moved to home.html
+
+
+Version: 1.0.13
+Date: Sat Dec 19 18:10:14 MET 1998
+
+ - many fixes for better error messages.
+
+
+Version: 1.0.12
+Date: Sat Dec 19 16:24:09 MET 1998
+
+ - small style fixes in source.
+ - simpler implementation.
+ - doc++
+
+
+Version: 1.0.11
+Date: Sat Dec 19 12:40:09 MET 1998
+
+ - Error and Warning added (.c and .html)
+   is it a goo idea?
+ - more non-regression tests (up to 41 now).
+ - motivating example from home page (this/that).
+
+
+Version: 1.0.10
+Date: Fri Dec 18 19:57:54 MET 1998
+
+ - small style fixes.
+ - more tests.
+ - error on empty arguments when defined.
+ - warn about empty arguments when used.
+
+
+Version: 1.0.9
+Date: Fri Dec 18 18:48:52 MET 1998
+
+ - small style fixes.
+ - simpler code.
+ - more tests!
+ - TODO list added.
+ - warn about unused arguments.
+
+
+Version: 1.0.8
+Date: Fri Dec 18 17:29:42 MET 1998
+
+ - better description phrase in README.
+ - small style fixes.
+ - more validation tests.
+ - generate warnings/error about argument name conflicts.
+   how nice I am with the user;-)
+ - chose longest argument name instead of first, if there is a conflict.
+   thus the substitution is independent of the order of macro arguments.
+
+
+Version: 1.0.7
+Date: Fri Dec 18 11:32:59 MET 1998
+
+ - more validation tests.
+ - installation section in home page.
+ - home page++
+ - more comments in source code.
+ - apache C style.
+
+
+Version: 1.0.6
+Date: Thu Dec 17 10:22:15 MET 1998
+
+ - documentation fixes.
+ - many tests added to detect mis-nesting.
+ - bug fixes: 
+   * macro and use can appear anywhere now.
+   * bad nesting detection inforced for "limit".
+   * fix for other nestings.
+   * compilation passes more -W* options.
+
+
+Version: 1.0.5
+Date: Wed Dec 16 20:04:04 MET 1998
+
+ - redefinitions of macros allowed with a warning.
+ - improved again automatic non-regression tests.
+
+
+Version: 1.0.4
+Date: Wed Dec 16 17:26:24 MET 1998
+
+ - nicer home page (example and header added).
+ - internals: more automatic validation. more tests.
+ - comments about "experimental perl sections" dropped. 
+   (I was told they are not experimental any more).
+
+
+Version: 1.0.3
+Date: Wed Dec 16 15:31:57 MET 1998
+
+ - GNU GPL v2 included.
+ - much larger (better?) home page.
+ - discussion moved from source file to home page.
+ - internals: Makefile++
+ - automatic validation tests.
+
+
+Version: 1.0.2
+Date: Wed Dec 16 14:01:08 MET 1998
+
+ - comparisons made case-insensitive (consistent with apache).
+ - better html documentation.
+ - this CHANGES file added.
+ - tar from directory mod_macro instead of mod_macro-/version/.
+ - INSTALL updated accordingly.
+ - internals: Makefile++ and home page moved in the source tree.
+ - more validation tests.
+
+
+Version: 1.0.1
+Date: Tue Dec 15 21:03:50 MET 1998
+
+ - initial revision
